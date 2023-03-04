@@ -1,5 +1,6 @@
 import datetime
 import queue
+from operator import itemgetter
 
 
 my_data = ("Игнатович Ольга Дмитриевна", 21, 10, 2003)
@@ -21,6 +22,18 @@ disc_marks = {
     }
 family_names = ["Ирина", "Дмитрий", "Алёна", "Татьяна", \
                 "Алексей","Светлана","Сергей","Татьяна","Алексей"]
+
+family_names_date = {
+    "Ирина": "2001", 
+    "Дмитрий": '1993', 
+    "Алёна": '1980',
+    "Татьяна(младшая)": '2004',
+    "Алексей(старший)": '1999',
+    "Светлана": '1988',
+    "Сергей": '1978',
+    "Татьяна": '1990',
+    "Алексей": '2000'
+    }
 
 kiwa_name = "Брусничка"
 
@@ -47,7 +60,7 @@ print("Число букв в предметах: ",len(stroka_bykv))
 
 #4
 lenght=sum(disc_marks.values())
-print(lenght)
+#print(lenght)
 k = {}
 for i in stroka_bykv:
     if i in k:
@@ -81,8 +94,8 @@ for i in disc_marks.keys():
     q.put(i)
     
 while True:
-    slovo=input()
-    if slovo=='':
+    slovo=input('Введите новый предмет или stop: ')
+    if slovo=='stop':
         break
     else:
         q.put(slovo)
@@ -94,8 +107,41 @@ while True:
 
 #9
 
-i=int(input())
+i=int(input('Введите число от 0 до 7: '))
 number_drevnii=(my_data[1]+my_data[2]**2+my_data[3])%21+1
-drevnii="Чимальпопока"
-alf[i]=drevnii
-print("Замена на ацтекского правителя", *alf)
+
+drevnii=["Acamapichtli", "Huitzilihuitl", "Chimalpopoca", "Itzcoatl", "Moctezuma I",
+    "Axayacatl", "Tizoc", "Ahuitzotl", "Moctezuma II", "Cuitláhuac",
+    "Cuauhtémoc", "Coanacoch", "Totoquihuatzin", "Quinatzin", "Ixtlilxochitl",
+    "Nezahualcoyotl", "Maxtla", "Tlacaelel", "Tlacopan", "Tlatoani Diego"]
+
+alf[i-1]=drevnii[number_drevnii-1]
+
+print("Замена на ацтекского правителя: ", *alf)
+
+
+#10
+
+sort_family=dict(sorted(family_names_date.items(), key=itemgetter(1)))
+
+print('Сортировка имен по годам рождения: ', sort_family)
+
+#11
+
+fio=my_data[0]
+#number = (len(fio) * len(family_names)) % 4
+#print(number)
+
+def sylvester():
+    e=1.264084735305302
+    for i in range(7):
+        step=2**(i+1)
+        b = int((e**step) + 0.5)
+        yield b
+    
+
+posled=sylvester()
+print('Функция-генератор: последовательность Сильвестра')
+
+for i, num in enumerate(posled):
+    print(num)
